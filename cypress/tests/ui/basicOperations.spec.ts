@@ -1,33 +1,12 @@
 const apiUrl = Cypress.env("apiUrl");
 
-const newPetJson : string = '{\n' +
-    '"id": 1337,\n' +
-    '  "category": {\n' +
-    '    "id": 1,\n' +
-    '    "name": "Dachshund"\n' +
-    '  },\n' +
-    '  "name": "Toffy",\n' +
-    '  "photoUrls": [\n' +
-    '    "string"\n' +
-    '  ],\n' +
-    '  "tags": [\n' +
-    '    {\n' +
-    '      "id": 1,\n' +
-    '      "name": "Playful"\n' +
-    '    }\n' +
-    '  ],\n' +
-    '  "status": "available"\n' +
-    '}'
-
 describe("Basic CRUD operations", () => {
     beforeEach(() => {
         cy.visit(apiUrl)
     })
 
     it("should add a new pet to the petStore", () => {
-        cy.get('#operations-pet-addPet').click()
-        cy.contains("Try it out").click()
-        cy.get(".body-param").find(".body-param__text").invoke('val', newPetJson)
+        cy.addNewPet()
         cy.wait(5000)
     })
 
