@@ -1,0 +1,18 @@
+{
+  "id": 1337,
+  "category": {
+    "id": 0,
+    "name": "Dachshund"
+  },
+  "name": "Toffy",
+  "photoUrls": [
+    "string"
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "string"
+    }
+  ],
+  "status": "available"
+}
