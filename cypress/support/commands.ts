@@ -13,16 +13,15 @@ Cypress.Commands.add("addPet", () => {
 });
 
 Cypress.Commands.add('updatePet', () => {
-    cy.get('#operations-pet-updatePetWithForm').click()
+    cy.get('#operations-pet-updatePet').click()
     cy.contains('Try it out').click()
-    cy.fixture('newPetData.json').then((json) => {
-        cy.get('#operations-pet-updatePetWithForm').find('input[placeholder=petId]').type(json.id)
-    })
     cy.fixture('updatePetData.json').then((json) => {
-        cy.get('#operations-pet-updatePetWithForm').find('input[placeholder=name]').type(json.name)
-        cy.get('#operations-pet-updatePetWithForm').find('input[placeholder=status]').type(json.status)
+        cy.get('#operations-pet-updatePet').find('.body-param__text').invoke('val', '').type(JSON.stringify(json), {
+            parseSpecialCharSequences: false,
+            delay: 0,
+        })
     })
-    cy.get('#operations-pet-updatePetWithForm').find('.execute-wrapper').click()
+    cy.get('#operations-pet-updatePet').find('.execute-wrapper').click()
 })
 
 Cypress.Commands.add('getPet', () => {
