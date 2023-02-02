@@ -33,7 +33,7 @@ Cypress.Commands.add('getPet', () => {
     cy.get('#operations-pet-getPetById').find('.execute-wrapper').click()
 })
 
-Cypress.Commands.add("deletePet", () => {
+Cypress.Commands.add('deletePet', () => {
     cy.get('#operations-pet-deletePet').click()
     cy.contains('Try it out').click()
     cy.get('#operations-pet-deletePet').find('input[placeholder=api_key]').type(apiKey)
@@ -42,6 +42,14 @@ Cypress.Commands.add("deletePet", () => {
     })
     cy.get('#operations-pet-deletePet').find('.execute-wrapper').click()
 });
+
+Cypress.Commands.add('assertValueCopiedToClipboard', value => {
+    cy.window().then(win => {
+        win.navigator.clipboard.readText().then(text => {
+            expect(text).to.deep.eq(value)
+        })
+    })
+})
 
 
 

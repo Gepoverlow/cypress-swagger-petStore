@@ -3,19 +3,29 @@ const apiUrl = Cypress.env('apiUrl')
 describe("Basic CRUD operations", () => {
     beforeEach(() => {
         cy.visit('/')
+        cy.window().then(win => {
+            // @ts-ignore
+            cy.stub(win, 'prompt').returns(win.prompt).as('copyToClipboardPrompt');
+        })
     })
 
-    it("should add a new pet to the petStore", () => {
+    it('should add a new pet to the petStore', () => {
         cy.intercept('POST', `${apiUrl}`).as('adding-pet')
-        cy.addPet()
 
         cy.fixture('newPetData.json').then((fixture) => {
+            cy.addPet()
             cy.wait('@adding-pet').then((interception) => {
                 expect(interception.response.body).to.deep.eq(fixture)
             })
+            cy.get('#operations-pet-addPet').find('.highlight-code').find('.copy-to-clipboard').click()
+            cy.get('@copyToClipboardPrompt').should('be.called')
+            cy.get('@copyToClipboardPrompt').should(prompt => {
+                expect(prompt.args[0][1].replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, "")).to.equal(JSON.stringify(fixture));
+            });
+
         })
 
-        cy.get("#operations-pet-addPet").find(".response-col_status").should((val) => {
+        cy.get('#operations-pet-addPet').find(".response-col_status").should((val) => {
             expect(val).to.contain("200")
         })
     })
@@ -28,6 +38,11 @@ describe("Basic CRUD operations", () => {
             cy.wait('@updating-pet').then((interception) => {
                 expect(interception.response.body).to.deep.eq(fixture)
             })
+            cy.get('#operations-pet-updatePet').find('.highlight-code').find('.copy-to-clipboard').click()
+            cy.get('@copyToClipboardPrompt').should('be.called')
+            cy.get('@copyToClipboardPrompt').should(prompt => {
+                expect(prompt.args[0][1].replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, "")).to.equal(JSON.stringify(fixture));
+            });
         })
 
         cy.get("#operations-pet-updatePet").find(".response-col_status").should((val) => {
@@ -43,6 +58,11 @@ describe("Basic CRUD operations", () => {
             cy.wait('@getting-pet').then((interception) => {
                 expect(interception.response.body).to.deep.eq(fixture)
             })
+            cy.get('#operations-pet-getPetById').find('.highlight-code').find('.copy-to-clipboard').click()
+            cy.get('@copyToClipboardPrompt').should('be.called')
+            cy.get('@copyToClipboardPrompt').should(prompt => {
+                expect(prompt.args[0][1].replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, "")).to.equal(JSON.stringify(fixture));
+            });
         })
 
         cy.get('#operations-pet-getPetById').find('.response-col_status').should((val) => {
@@ -60,6 +80,11 @@ describe("Basic CRUD operations", () => {
                 expect(interception.response.statusCode).to.equal(200)
                 expect(interception.response.body.message).to.contain(fixture.id)
             })
+            cy.get('#operations-pet-deletePet').find('.highlight-code').find('.copy-to-clipboard').click()
+            cy.get('@copyToClipboardPrompt').should('be.called')
+            cy.get('@copyToClipboardPrompt').should(prompt => {
+                expect(prompt.args[0][1].replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, "")).to.equal(`{"code":200,"type":"unknown","message":"${fixture.id}"}`);
+            });
         })
 
         cy.get('#operations-pet-deletePet').find('.response-col_status').should((val) => {

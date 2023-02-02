@@ -6,5 +6,13 @@ declare namespace Cypress {
         updatePet(): Chainable<any>
         getPet(): Chainable<any>
         deletePet(): Chainable<any>
+        assertValueCopiedToClipboard(text): Chainable<any>
+    }
+    interface JQuery {
+
+    }
+
+    interface SinonStub<T> {
+
     }
 }
