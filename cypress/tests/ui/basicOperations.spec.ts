@@ -3,14 +3,10 @@ const apiUrl = Cypress.env('apiUrl')
 describe("Basic CRUD operations", () => {
     beforeEach(() => {
         cy.visit('/')
-
-        cy.intercept('POST', `${apiUrl}`).as('adding-pet')
-        cy.intercept('PUT', `${apiUrl}`).as('updating-pet')
-        cy.intercept('GET', `${apiUrl}/*`).as('getting-pet')
-        cy.intercept('DELETE', `${apiUrl}/*`).as('deleting-pet')
     })
 
     it("should add a new pet to the petStore", () => {
+        cy.intercept('POST', `${apiUrl}`).as('adding-pet')
         cy.addPet()
 
         cy.fixture('newPetData.json').then((fixture) => {
@@ -25,6 +21,7 @@ describe("Basic CRUD operations", () => {
     })
 
     it("should update an existing pet in the petStore by its id", () => {
+        cy.intercept('PUT', `${apiUrl}`).as('updating-pet')
         cy.updatePet()
 
         cy.fixture('updatePetData.json').then((fixture) => {
@@ -39,6 +36,7 @@ describe("Basic CRUD operations", () => {
     })
 
     it("should get an existing pet from the petStore by its id", () => {
+        cy.intercept('GET', `${apiUrl}/*`).as('getting-pet')
         cy.getPet()
 
         cy.fixture('updatePetData.json').then((fixture) => {
@@ -53,6 +51,7 @@ describe("Basic CRUD operations", () => {
     })
 
     it("should delete an existing pet from the petStore by its id", () => {
+        cy.intercept('DELETE', `${apiUrl}/*`).as('deleting-pet')
         cy.deletePet()
 
         cy.fixture('updatePetData.json').then((fixture) => {
