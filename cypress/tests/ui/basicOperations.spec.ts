@@ -57,7 +57,6 @@ describe("Basic CRUD operations", () => {
 
         cy.fixture('updatePetData.json').then((fixture) => {
             cy.wait('@deleting-pet').then((interception) => {
-                cy.log(interception.response.body.code)
                 expect(interception.response.statusCode).to.equal(200)
                 expect(interception.response.body.message).to.contain(fixture.id)
             })
